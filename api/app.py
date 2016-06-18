@@ -16,6 +16,11 @@ with open("../olympic_events_2012.csv") as f:
     reader = csv.DictReader(f)
     events = [row for row in reader]
 
+def string_found(string1, string2):
+   if re.search(r"\b" + re.escape(string1) + r"\b", string2):
+      return True
+   return False
+
 def search(status):
     filtered_events = events
     if status.get('discipline_name'):
@@ -23,7 +28,8 @@ def search(status):
             if event['discipline_name'].lower() == status['discipline_name']]
     if status.get('gender'):
         filtered_events = [event for event in filtered_events
-            if status['gender'] in event['olympic_event_name'].lower()]
+            if string_found(status['gender'], event['olympic_event_name'].lower()) or
+               string_found(status['gender'] + "'s", event['olympic_event_name'].lower())]
     if status.get('individual_team_type'):
         filtered_events = [event for event in filtered_events
             if status['individual_team_type'] in event['olympic_event_name'].lower()]
