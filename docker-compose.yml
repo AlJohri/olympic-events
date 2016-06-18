@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: ./api/Dockerfile
     ports: ["5000:5000"]
+    tty: true
   tester:
     build: 
       context: .

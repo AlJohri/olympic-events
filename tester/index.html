@@ -6,9 +6,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
   <script type="text/javascript">
 	angular.module("app", []).controller("mainController", function($scope, $http) {
+		// $scope.server = "https://olympic-events.perso.nile.works/"
+		$scope.server = "http://localhost:5000/"
 		$scope.queryChanged = function(query) {
 			console.log(query);
-			var promise = $http.get("https://olympic-events.perso.nile.works/" + query).then(function(response) {
+			var promise = $http.get($scope.server + query).then(function(response) {
 				console.log(response);
 				$scope.output = response.data;
 				return response.data;

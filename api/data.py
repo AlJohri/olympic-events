@@ -1,17 +1,21 @@
+def reverse_dict(d):
+    return {k:primary_key for primary_key, keywords in d.items() for k in keywords}
+
+MALE_GENDER = ["male", "men", "man"]
+FEMALE_GENDER = ["female", "women", "woman"]
+MIXED_GENDER = ["mixed"]
+
 GENDER = {
-    "male": ["male", "men"],
-    "female": ["female", "women"],
-    "mixed": ["mixed"]
+    "men": [x+"'s" for x in MALE_GENDER] + MALE_GENDER,
+    "women": [x+"'s" for x in FEMALE_GENDER] + FEMALE_GENDER,
+    "mixed": MIXED_GENDER,
 }
 
-REVERSED_GENDER = {
-    k:primary_key for primary_key, keywords in GENDER.items() for k in keywords
-}
+# [r"(?<!wo)man", r"(?<!wo)men"]
 
 # men, women, mixed
 # team, individual
 # meters, kilometers, kg
-# steeplechase, relay, hurdles, decathalon, discus throw, high jump, discus throw, javelin throw, long jump, marathon, pole vault, shot put, triple jump
 # doubles, singles
 # bantam, fly, heavy, light
 # keirin, omnium
@@ -20,7 +24,7 @@ REVERSED_GENDER = {
 DISCIPLINES = {
     "AR": ["archery"],
     "GA": ["artistic gymnastics"],
-    "AT": ["track and field", "athletics"],
+    "AT": ["athletics", "track and field"],
     "BD": ["badminton"],
     "BK": ["basketball"],
     "BV": ["beach volleyball"],
@@ -59,6 +63,42 @@ DISCIPLINES = {
     "WR": ["wrestling"],
 }
 
-REVERSED_DISCIPLINES = {
-    k:primary_key for primary_key, keywords in DISCIPLINES.items() for k in keywords
+SWIM_EVENTS = {
+    "backstroke": ["backstroke"],
+    "breaststroke": ["breaststroke"],
+    "butterfly": ["butterfly"],
+    "freestyle": ["freestyle"],
+}
+
+EQUESTRIAN_EVENTS = {
+    "dressage": ["dressage"],
+    "eventing": ["eventing"],
+    "jumping": ["jumping"],
+}
+
+TRACK_EVENTS = {
+    "hurdles": ["hurdles"],
+    "steeplechase": ["steeplechase"],
+    "relay": ["relay"],
+    "high jump": ["high jump"],
+    "long jump": ["long jump"],
+    "triple jump": ["triple jump"],
+    "javelin throw": ["javelin throw"],
+    "decathlon": ["decathlon"],
+    "heptathalon": ["heptathalon"],
+    "discus throw": ["discus throw"],
+    "hammer throw": ["hammer throw"],
+    "marathon": ["marathon"],
+    "pole vault": ["pole vault"],
+    "shot put": ["shot put"],
+}
+
+DOUBLES_VS_SINGLES = {
+    "doubles": ["doubles", "double"],
+    "singles": ["singles", "single"],
+}
+
+INDIVIDUAL_VS_TEAM = {
+    "individual": ["individual"],
+    "team": ["team"],
 }
