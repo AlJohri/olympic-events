@@ -7,7 +7,7 @@
   <script type="text/javascript">
 	angular.module("app", []).controller("mainController", function($scope, $http) {
 
-		if (document.location.toString().match("olympic-events\.perso\.nile\.works")) {
+		if (document.location.toString().match("olympic-events-tester")) {
 		  $scope.server = "https://olympic-events.perso.nile.works/api/v1/query/";
 		}
 		if (document.location.toString().match("localhost")) {
