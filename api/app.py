@@ -31,7 +31,7 @@ def query(query):
 
     for gender in gender_candidates:
         if gender in query:
-            query = re.sub(r"\s\s+", "\s", query.replace(gender, "").strip())
+            query = re.sub(r"\s\s+", " ", query.replace(gender, "").strip())
             status['gender'] = REVERSED_GENDER[gender.replace("'s", "")]
             status['rest'] = query
 
@@ -41,7 +41,7 @@ def query(query):
 
     for discipline_name in discipline_candidates:
         if discipline_name in query:
-            query = re.sub(r"\s\s+", r"\s", query.replace(discipline_name, "").strip())
+            query = re.sub(r"\s\s+", " ", query.replace(discipline_name, "").strip())
             status['discipline_code'] = REVERSED_DISCIPLINES[discipline_name.replace("'s", "")]
             status['discipline_name'] = DISCIPLINES[status['discipline_code']][0]
             status['rest'] = query

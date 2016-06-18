@@ -8,7 +8,7 @@
 	angular.module("app", []).controller("mainController", function($scope, $http) {
 		$scope.queryChanged = function(query) {
 			console.log(query);
-			var promise = $http.get("http://olympic-events.perso.nile.works/" + query).then(function(response) {
+			var promise = $http.get("https://olympic-events.perso.nile.works/" + query).then(function(response) {
 				console.log(response);
 				$scope.output = response.data;
 				return response.data;
