@@ -14,11 +14,7 @@ from data import reverse_dict
 from data import GENDERS, DISCIPLINES, DOUBLES_VS_SINGLES, INDIVIDUAL_VS_TEAM
 from data import SWIM_EVENTS, EQUESTRIAN_EVENTS, TRACK_EVENTS
 
-amount_metric_regex = re.compile(r"(?P<amount>\d+)(?:\s)?(?P<metric>meter|m|kilogram|kg)")
-
-with open("../olympic_events_2012.csv") as f:
-    reader = csv.DictReader(f)
-    events = [row for row in reader]
+amount_metric_regex = re.compile(r"(?P<amount>[\d,]+)(?:\s)?(?P<metric>meter|m|kilogram|kg)")
 
 def string_found(string1, string2):
     # custom word boundary, r"\b" doesn't handle contractions properly
@@ -27,29 +23,41 @@ def string_found(string1, string2):
     return False
 
 def search(status):
-    filtered_events = events
-    if status.get('discipline_name'):
-        filtered_events = [event for event in filtered_events
-            if event['discipline_name'].lower() == status['discipline_name']]
-    if status.get('gender'):
-        filtered_events = [event for event in filtered_events
-            if string_found(status['gender'], event['olympic_event_name'].lower()) or
-               string_found(status['gender'] + "'s", event['olympic_event_name'].lower())]
-    if status.get('individual_team_type'):
-        filtered_events = [event for event in filtered_events
-            if status['individual_team_type'] in event['olympic_event_name'].lower()]
+    rest = status.pop('rest') if status.get('rest') != None else ""
+    filtered_events = []
+    for event, tagged_event in tagged_events:
+        if all(tagged_event.get(k) == v for k,v in status.items()):
+            filtered_events.append(event)
     return filtered_events
 
+    # if status.get('discipline'):
+    #     filtered_events = [event for event in filtered_events
+    #         if event['discipline_name'].lower() == status['discipline_name']]
+    # if status.get('gender'):
+    #     filtered_events = [event for event in filtered_events
+    #         if string_found(status['gender'], event['olympic_event_name'].lower()) or
+    #            string_found(status['gender'] + "'s", event['olympic_event_name'].lower())]
+    # if status.get('individual_team_type'):
+    #     filtered_events = [event for event in filtered_events
+    #         if status['individual_team_type'] in event['olympic_event_name'].lower()]
+    
+
 def search_for_dict_in_query(d, query, key, status):
+    """
+    search among a variety of different ways to say a particular entity
+    starting from the longest variation and stopping after the first
+    variation is found
+    """
     logging.debug("searching for %s..." % key)
     revsersed_d = reverse_dict(d)
-    for phrase in revsersed_d.keys():
+    for phrase in sorted(revsersed_d.keys(), key=len, reverse=True):
         if string_found(phrase, query):
-            print("found %s %s" % (key, phrase))
+            # print("found %s %s" % (key, phrase))
             query = re.sub(r"\b%s\b" % phrase, "", query).strip()
             query = re.sub(r"\s\s+", " ", query)
             status[key] = revsersed_d[phrase]
             status['rest'] = query
+            break
     return query
 
 def parse(query):
@@ -63,20 +71,24 @@ def parse(query):
     m2 = amount_metric_regex.search(query)
     if m2:
         amount_metric_dict = m2.groupdict()
-        print("found amount metrix %s" % str(amount_metric_dict))
-        print(amount_metric_dict)
+        # print("found amount metrix %s" % str(amount_metric_dict))
+        # print(amount_metric_dict)
         status.update(amount_metric_dict)
         query = re.sub(r"\s\s+", r"\s", query.replace(m2.group(), "").strip())
         status['rest'] = query
 
     query = search_for_dict_in_query(SWIM_EVENTS, query, "swim_event", status)
-    if status.get('swim_event'): status['discipline'] = "SWIWMMING"
+    # if status.get('swim_event'):
+    #     if status.get('discipline') in ["SWIMMING", None]:
+    #         status['discipline'] = "SWIWMMING"
+    #     else:
+    #         raise Exception("conflicting disciplines")
 
     query = search_for_dict_in_query(EQUESTRIAN_EVENTS, query, "equestrian_event", status)
-    if status.get('equestrian_event'): status['discipline'] = "EQUESTRIAN"
+    # if status.get('equestrian_event'): status['discipline'] = "EQUESTRIAN"
 
     query = search_for_dict_in_query(TRACK_EVENTS, query, "track_event", status)
-    if status.get('track_event'): status['discipline'] = "TRACK_AND_FIELD"
+    # if status.get('track_event'): status['discipline'] = "TRACK_AND_FIELD"
 
     query = search_for_dict_in_query(DOUBLES_VS_SINGLES, query, "doubles_singles", status)
     query = search_for_dict_in_query(INDIVIDUAL_VS_TEAM, query, "individuals_team", status)
@@ -118,4 +130,13 @@ def foo(q):
     return jsonify(ret)
 
 if __name__ == "__main__":
+
+    with open("../olympic_events_2012.csv") as f:
+        reader = csv.DictReader(f)
+        events = [row for row in reader]
+
+    tagged_events = [(event, parse(event['discipline_name'] + " " + event['olympic_event_name'])) for event in events]
+    # for event, tagged_event in tagged_events:
+    #     print(event, tagged_event)
+
     app.run(host='0.0.0.0', debug=True)

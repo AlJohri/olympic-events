@@ -20,7 +20,7 @@ GENDERS = {
 DISCIPLINES = {
     "ARCHERY": ["archery"],
     "GYMNASTICS_ARTISTIC": ["artistic gymnastics"],
-    "TRACK_AND_FIELD": ["athletics", "track and field", "track"],
+    "TRACK_AND_FIELD": ["athletics", "track and field"],
     "BADMINTON": ["badminton"],
     "BASKETBALL": ["basketball"],
     "BEACH_VOLLEYBALL": ["beach volleyball"],
