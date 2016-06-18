@@ -5,11 +5,15 @@ services:
       context: .
       dockerfile: ./api/Dockerfile
     ports: ["5000:5000"]
+    volumes:
+      - ./api:/code/api
     tty: true
   tester:
     build: 
       context: .
       dockerfile: ./tester/Dockerfile
     ports: ["4000:4000"]
+    volumes:
+      - ./tester:/code/tester
     links:
         - api

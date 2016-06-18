@@ -1,10 +1,14 @@
-import re, csv, itertools
+import re, csv, itertools, logging
+from collections import OrderedDict
 
 from flask import Flask, jsonify
+
 from flask_cors import CORS
 from pprint import pprint as pp
 app = Flask(__name__)
 CORS(app)
+
+app.config["JSON_SORT_KEYS"] = False
 
 from data import reverse_dict
 from data import GENDER, DISCIPLINES, DOUBLES_VS_SINGLES, INDIVIDUAL_VS_TEAM
@@ -39,7 +43,7 @@ def parse(query):
     query = query.lower()
     status = {}
 
-    print("searching for gender...")
+    logging.debug("searching for gender...")
     for gender in GENDER['women'] + GENDER['men'] + GENDER['mixed']:
         if gender in query:
             print("found gender %s" % gender)
@@ -47,7 +51,7 @@ def parse(query):
             status['gender'] = reverse_dict(GENDER)[gender]
             status['rest'] = query
 
-    print("searching for discipline_name...")
+    logging.debug("searching for discipline_name...")
     for discipline_name in reverse_dict(DISCIPLINES).keys():
         if discipline_name in query:
             print("found discipline_name %s" % discipline_name)
@@ -56,42 +60,42 @@ def parse(query):
             status['discipline_name'] = DISCIPLINES[status['discipline_code']][0]
             status['rest'] = query
 
-    print("searching for swim event...")
+    logging.debug("searching for swim event...")
     for swim_event in reverse_dict(SWIM_EVENTS).keys():
         if swim_event in query:
             query = re.sub(r"\s\s+", " ", query.replace(swim_event, "").strip())
             status['swim_event'] = swim_event
             status['rest'] = query
 
-    print("searching for equestrian event...")
+    logging.debug("searching for equestrian event...")
     for equestrian_event in reverse_dict(EQUESTRIAN_EVENTS).keys():
         if equestrian_event in query:
             query = re.sub(r"\s\s+", " ", query.replace(equestrian_event, "").strip())
             status['equestrian_event'] = equestrian_event
             status['rest'] = query
 
-    print("searching for track event...")
+    logging.debug("searching for track event...")
     for track_event in reverse_dict(TRACK_EVENTS).keys():
         if track_event in query:
             query = re.sub(r"\s\s+", " ", query.replace(track_event, "").strip())
             status['track_event'] = track_event
             status['rest'] = query
 
-    print("searching for doubles vs singles...")
+    logging.debug("searching for doubles vs singles...")
     for double_single_type in reverse_dict(DOUBLES_VS_SINGLES).keys():
         if double_single_type in query:
             query = re.sub(r"\s\s+", " ", query.replace(double_single_type, "").strip())
             status['double_single_type'] = double_single_type
             status['rest'] = query
 
-    print("searching for individual vs team...")
+    logging.debug("searching for individual vs team...")
     for individual_team_type in reverse_dict(INDIVIDUAL_VS_TEAM).keys():
         if individual_team_type in query:
             query = re.sub(r"\s\s+", " ", query.replace(individual_team_type, "").strip())
             status['individual_team_type'] = individual_team_type
             status['rest'] = query
 
-    print("searching for amount and unit...")
+    logging.debug("searching for amount and unit...")
     m2 = amount_metric_regex.search(query)
     if m2:
         amount_metric_dict = m2.groupdict()
@@ -111,9 +115,10 @@ def parse(query):
 
 @app.route("/")
 def root():
-    return jsonify({})
+    return "ok"
 
-@app.route("/<q>")
+@app.route("/api/v1/query/", defaults={'q': ""})
+@app.route("/api/v1/query/<q>")
 def foo(q):
     try:
         status = parse(q)
@@ -125,11 +130,16 @@ def foo(q):
     except Exception as e:
         return jsonify({"error": str(e)})
 
-    return jsonify({
-        "meta": {"num": len(filtered_events)},
-        "status": status,
-        "events": filtered_events
-    })
+    ret = OrderedDict((
+            ("meta", {"num": len(filtered_events)}),
+            ("status", status),
+            ("events", filtered_events)))
+
+    if len(filtered_events) > 40:
+        del ret['events']
+        ret['meta']['warning'] = "more than 40 events"
+
+    return jsonify(ret)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
