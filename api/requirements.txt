@@ -1,0 +1,2 @@
+git+https://github.com/pallets/flask.git
+Flask-Cors==2.1.2

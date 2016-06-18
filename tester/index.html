@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script type="text/javascript">
+	angular.module("app", []).controller("mainController", function($scope, $http) {
+		$scope.queryChanged = function(query) {
+			console.log(query);
+			var promise = $http.get("http://olympic-events.perso.nile.works/" + query).then(function(response) {
+				console.log(response);
+				$scope.output = response.data;
+				return response.data;
+			})
+			return promise;
+		}
+	});
+  </script>
+</head>
+<body ng-app="app" ng-controller="mainController">
+	<div class="container">
+		<h1>Olympic Events API Tester</h1>
+		<div class="row">
+			<div class="col-sm-6">
+			<input class="form-control" ng-model="query" ng-change="queryChanged(query)"></input></div>
+			<div class="col-sm-6"><pre>{{output | json}}</pre></div>
+	    </div>
+    </div>
+</body>
+</html>

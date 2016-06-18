@@ -1,0 +1,14 @@
+version: '2'
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: ./api/Dockerfile
+    ports: ["5000:5000"]
+  tester:
+    build: 
+      context: .
+      dockerfile: ./tester/Dockerfile
+    ports: ["4000:4000"]
+    links:
+        - api
