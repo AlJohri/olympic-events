@@ -1,14 +1,10 @@
 def reverse_dict(d):
     return {k:primary_key for primary_key, keywords in d.items() for k in keywords}
 
-MALE_GENDER = ["male", "men", "man"]
-FEMALE_GENDER = ["female", "women", "woman"]
-MIXED_GENDER = ["mixed"]
-
-GENDER = {
-    "men": [x+"'s" for x in MALE_GENDER] + MALE_GENDER,
-    "women": [x+"'s" for x in FEMALE_GENDER] + FEMALE_GENDER,
-    "mixed": MIXED_GENDER,
+GENDERS = {
+    "MEN": ["male's", "men's", "man's", "male", "men", "man"],
+    "WOMEN": ["female's", "women's", "woman's", "female", "women", "woman"],
+    "MIXED": ["mixed"],
 }
 
 # [r"(?<!wo)man", r"(?<!wo)men"]
@@ -22,83 +18,83 @@ GENDER = {
 # backstroke, breaststroke, butterfly, freestyle, marathon
 
 DISCIPLINES = {
-    "AR": ["archery"],
-    "GA": ["artistic gymnastics"],
-    "AT": ["athletics", "track and field"],
-    "BD": ["badminton"],
-    "BK": ["basketball"],
-    "BV": ["beach volleyball"],
-    "BX": ["boxing"],
-    "CS": ["canoe slalom"],
-    "CF": ["canoe sprint"],
-    "CB": ["cycling bmx"],
-    "CM": ["cycling mountain bike"],
-    "CR": ["cycling road"],
-    "CT": ["cycling track"],
-    "DV": ["diving"],
-    "EQ": ["equestrian"],
-    "FE": ["fencing"],
-    "FB": ["football"],
-    "GO": ["golf"],
-    "HB": ["handball"],
-    "HO": ["hockey"],
-    "JU": ["judo"],
-    "OW": ["marathon swimming"],
-    "MP": ["modern pentathlon"],
-    "GR": ["rhythmic gymnastics"],
-    "RO": ["rowing"],
-    "RU": ["rugby"],
-    "SA": ["sailing"],
-    "SH": ["shooting"],
-    "SW": ["swimming"],
-    "SY": ["synchronised swimming"],
-    "TT": ["table tennis"],
-    "TK": ["taekwondo"],
-    "TE": ["tennis"],
-    "GT": ["trampoline gymnastics"],
-    "TR": ["triathlon"],
-    "VO": ["volleyball"],
-    "WP": ["water polo"],
-    "WL": ["weightlifting"],
-    "WR": ["wrestling"],
+    "ARCHERY": ["archery"],
+    "GYMNASTICS_ARTISTIC": ["artistic gymnastics"],
+    "TRACK_AND_FIELD": ["athletics", "track and field", "track"],
+    "BADMINTON": ["badminton"],
+    "BASKETBALL": ["basketball"],
+    "BEACH_VOLLEYBALL": ["beach volleyball"],
+    "BOXING": ["boxing"],
+    "CANOE_SLALOM": ["canoe slalom"],
+    "CANOE_SPRINT": ["canoe sprint"],
+    "CYCLING_BMX": ["cycling bmx", "bmx"],
+    "CYCLING_MOUNTAIN_BIKE": ["cycling mountain bike", "mountain"],
+    "CYCLING_ROAD": ["cycling road"],
+    "CYCLING_TRACK": ["cycling track"],
+    "DIVING": ["diving"],
+    "EQUESTRIAN": ["equestrian"],
+    "FENCING": ["fencing"],
+    "SOCCER": ["football", "soccer"],
+    "GOLF": ["golf"],
+    "HANDBALL": ["handball"],
+    "FIELD_HOCKEY": ["field hockey", "hockey"],
+    "JUDO": ["judo"],
+    "MARATHON_SWIMMING": ["marathon swimming"],
+    "MODERN_PENTATHALON": ["modern pentathlon"],
+    "GYMNASTICS)RYTHMIC": ["rhythmic gymnastics"],
+    "ROWING": ["rowing"],
+    "RUGBY": ["rugby"],
+    "SAILING": ["sailing"],
+    "SHOOTING": ["shooting"],
+    "SWIWMMING": ["swimming"],
+    "SYNCHRONIZED_SWIMMING": ["synchronised swimming", "synchronized swimming"],
+    "TABLE_TENNIS": ["table tennis", "ping pong"],
+    "TAEKWONDO": ["taekwondo"],
+    "TENNIS": ["tennis"],
+    "GYMNASTICS_TRAMPOLINE": ["trampoline gymnastics"],
+    "TRIATHALON": ["triathlon"],
+    "VOLLEYBALL": ["volleyball"],
+    "WATER_POLO": ["water polo"],
+    "WEIGHTLIFTING": ["weightlifting"],
+    "WRESTLING": ["wrestling"],
 }
 
 SWIM_EVENTS = {
-    "backstroke": ["backstroke"],
-    "breaststroke": ["breaststroke"],
-    "butterfly": ["butterfly"],
-    "freestyle": ["freestyle"],
+    "BACKSTROKE": ["backstroke"],
+    "BREASTSTROKE": ["breaststroke"],
+    "BUTTERFLY": ["butterfly"],
+    "FREESTYLE": ["freestyle"],
 }
 
 EQUESTRIAN_EVENTS = {
-    "dressage": ["dressage"],
-    "eventing": ["eventing"],
-    "jumping": ["jumping"],
+    "DRESSAGE": ["dressage"],
+    "EVENTING": ["eventing"],
+    "JUMPING": ["jumping"],
 }
 
 TRACK_EVENTS = {
-    "hurdles": ["hurdles"],
-    "steeplechase": ["steeplechase"],
-    "relay": ["relay"],
-    "high jump": ["high jump"],
-    "long jump": ["long jump"],
-    "triple jump": ["triple jump"],
-    "javelin throw": ["javelin throw"],
-    "decathlon": ["decathlon"],
-    "heptathalon": ["heptathalon"],
-    "discus throw": ["discus throw"],
-    "hammer throw": ["hammer throw"],
-    "marathon": ["marathon"],
-    "pole vault": ["pole vault"],
-    "shot put": ["shot put"],
+    "HURDLES": ["hurdle", "hurdles"],
+    "STEEPLECHASE": ["steeplechase"],
+    "RELAY": ["relay"],
+    "HIGH_JUMP": ["high jump"],
+    "LONG_JUMP": ["long jump"],
+    "TRIPLE_JUMP": ["triple jump"],
+    "JAVELIN_THROW": ["javelin"],
+    "DECATHLON": ["decathlon"],
+    "HEPTATHLON": ["heptathlon"],
+    "DISCUS_THROW": ["discus"],
+    "HAMMER_THROW": ["hammer"],
+    "MARATHON": ["marathon"],
+    "POLE_VAULT": ["pole vault"],
+    "SHOT_PUT": ["shot put"],
 }
 
 DOUBLES_VS_SINGLES = {
-    "doubles": ["doubles", "double"],
-    "singles": ["singles", "single"],
+    "DOUBLES": ["doubles", "double"],
+    "SINGLES": ["singles", "single"],
 }
 
 INDIVIDUAL_VS_TEAM = {
-    "individual": ["individual"],
-    "team": ["team"],
+    "INDIVIDUAL": ["individual"],
+    "TEAM": ["team"],
 }
